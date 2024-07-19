@@ -1,10 +1,10 @@
+import { useState } from "react";
 import { Editor } from "@monaco-editor/react";
 import { LANGUAGE_VERSIONS, CODE_SNIPPETS } from "./constants/utils";
 import Button from "./components/Button";
 import { FaPlay, FaSave, FaPlusSquare } from "react-icons/fa";
-
-import { useState } from "react";
 import axios from "axios";
+import SideBar from "./components/SideBar";
 
 const App = () => {
   const [editorLanguage, setEditorLanguage] = useState("javascript");
@@ -21,19 +21,22 @@ const App = () => {
   const executeCode = async () => {
     try {
       setOutput("Executing...");
-      const res = await axios.post("https://emkc.org/api/v2/piston/execute", {
-        language: editorLanguage,
-        version: LANGUAGE_VERSIONS[editorLanguage],
-        files: [
-          {
-            name: "main",
-            content: code,
-          },
-        ],
-      });
+      const response = await axios.post(
+        "https://emkc.org/api/v2/piston/execute",
+        {
+          language: editorLanguage,
+          version: LANGUAGE_VERSIONS[editorLanguage],
+          files: [
+            {
+              name: "main",
+              content: code,
+            },
+          ],
+        }
+      );
 
-      res.data.run.stderr ? setIsError(true) : setIsError(false);
-      setOutput(res.data.run.output);
+      response.data.run.stderr ? setIsError(true) : setIsError(false);
+      setOutput(response.data.run.output);
     } catch (error) {
       setOutput("An error occured while executing the code");
       console.error(error);
@@ -70,17 +73,18 @@ const App = () => {
               Run Code
             </Button>
           </div>
-          {/* <div className="flex flex-row justify-center items-center gap-4">
+          <div className="flex flex-row justify-center items-center gap-4">
             <Button className="flex justify-center items-center gap-2">
               <FaSave /> Save Code
             </Button>
             <Button className="flex justify-center items-center gap-2">
               <FaPlusSquare /> New Code
             </Button>
-          </div> */}
+          </div>
         </nav>
       </header>
       <div className="h-full flex flex-col gap-2 md:flex-row bg-[#1e1e1e]">
+        <SideBar />
         <Editor
           theme="vs-dark"
           language={editorLanguage}
@@ -88,10 +92,10 @@ const App = () => {
           value={CODE_SNIPPETS[editorLanguage]}
           onChange={(newValue) => setCode(newValue)}
         />
-        <div className="text-white border border-neutral-700 rounded-lg p-3 mr-2 mb-2 md:w-[50%]">
+        <div className="text-white border border-neutral-700 rounded-lg p-3 mr-2 mb-2 overflow-auto md:w-[50%]">
           <h1>Output</h1>
           <hr className="my-3 border-neutral-800" />
-          <h1 className={isError ? "text-red-600" : ""}>{output}</h1>
+          <pre className={isError ? "text-red-600" : ""}>{output}</pre>
         </div>
       </div>
     </main>
