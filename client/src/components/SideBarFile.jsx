@@ -1,4 +1,4 @@
-import { FaRegFileAlt, FaTrashAlt } from "react-icons/fa";
+import { FaRegFileAlt } from "react-icons/fa";
 
 const SideBarFile = ({ filename }) => {
   return (

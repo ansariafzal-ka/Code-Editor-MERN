@@ -21,11 +21,11 @@ const SideBar = () => {
   }, []);
 
   return (
-    <div className="w-[350px] px-5 flex flex-col gap-y-2 border-r border-neutral-700">
+    <div className="min-w-[200px] px-5 flex flex-col gap-y-2 border-r border-neutral-700">
       <div className="text-white flex justify-between items-center">
         <h1>Files</h1>
       </div>
-      <hr className="border-neutral-800 my-1" />
+      <hr className="border-neutral-800 mt-1 mb-2" />
       {files.map((fileName, index) => (
         <SideBarFile key={index} filename={fileName} />
       ))}
