@@ -4,10 +4,12 @@ import { FaPlusSquare } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import InputField from "./InputField";
 import axios from "axios";
+import { LANGUAGE_VERSIONS } from "../constants/utils";
 
-const Modal = ({ code }) => {
+const Modal = ({ fetchFiles }) => {
   const [modal, setModal] = useState(false);
   const [author, setAuthor] = useState("");
+  const [editorLanguage, setEditorLanguage] = useState("javascript");
   const [fileName, setFileName] = useState("");
 
   const createNewCode = async (e) => {
@@ -18,10 +20,15 @@ const Modal = ({ code }) => {
         {
           author: author,
           fileName: fileName,
-          code: code,
+          code: "",
+          language: editorLanguage,
         }
       );
+      fetchFiles();
       toggleModal();
+      setAuthor("");
+      setFileName("");
+      setEditorLanguage("javascript");
       console.log(response.data);
     } catch (error) {
       console.log("error creating new code : ", error);
@@ -71,6 +78,25 @@ const Modal = ({ code }) => {
                 value={fileName}
                 type={"text"}
               />
+              <label>Language</label>
+              <select
+                required
+                onChange={(e) => {
+                  setEditorLanguage(e.target.value);
+                }}
+                value={editorLanguage}
+                className="cursor-pointer border border-neutral-700 px-4 py-3 rounded-lg outline-none font-medium bg-transparent text-white appearance-none hover:bg-neutral-800"
+              >
+                {Object.keys(LANGUAGE_VERSIONS).map((language) => (
+                  <option
+                    key={language}
+                    value={language}
+                    className="bg-neutral-800 text-white"
+                  >
+                    {language}
+                  </option>
+                ))}
+              </select>
               <Button type={"submit"} className="mt-3">
                 create
               </Button>

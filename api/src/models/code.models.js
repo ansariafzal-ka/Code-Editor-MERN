@@ -11,7 +11,10 @@ const codeModel = new mongoose.Schema({
   },
   code: {
     type: String,
-    required: true,
+  },
+  language: {
+    type: String,
+    enum: ["javascript", "python", "java", "csharp", "php"],
   },
   createdAt: {
     type: Date,
