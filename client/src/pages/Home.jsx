@@ -15,6 +15,7 @@ const Home = () => {
   const [isError, setIsError] = useState(false);
   const [author, setAuthor] = useState("");
   const [createdAt, setCreatedAt] = useState("");
+  const [fileName, setFileName] = useState("");
   const [selectedFileId, setSelectedFileId] = useState(null);
 
   const handleLanguageChange = (language) => {
@@ -60,6 +61,7 @@ const Home = () => {
         setEditorLanguage(firstCode.language);
         setAuthor(firstCode.author);
         setCreatedAt(new Date(firstCode.createdAt).toLocaleDateString());
+        setFileName(firstCode.fileName);
         setSelectedFileId(firstCode._id);
       }
     } catch (error) {
@@ -76,6 +78,7 @@ const Home = () => {
       setCode(file.code);
       setEditorLanguage(file.language);
       setAuthor(file.author);
+      setFileName(file.fileName);
       setCreatedAt(new Date(file.createdAt).toLocaleDateString());
       setSelectedFileId(fileId);
       setOutput("");
@@ -163,9 +166,10 @@ const Home = () => {
       <div className="h-full flex flex-col gap-2 md:flex-row bg-[#1e1e1e]">
         <SideBar files={files} onFileClick={handleFileClick} />
         <div className="w-full flex flex-col">
-          <div className="mb-5 flex justify-between text-center px-8 border-b border-neutral-800">
+          <div className="mb-5 flex justify-between px-8 pb-3 border-b border-neutral-800">
+            <h1 className="text-neutral-500 italic">file name - {fileName}</h1>
             <h1 className="text-neutral-500 italic">author - {author}</h1>
-            <h1 className="text-neutral-500 italic ml-8 mb-3">
+            <h1 className="text-neutral-500 italic">
               created at - {createdAt}
             </h1>
             <button onClick={handleDeleteCode} className="text-red-600">
