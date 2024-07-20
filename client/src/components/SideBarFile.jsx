@@ -6,9 +6,9 @@ const SideBarFile = ({ fileName, fileId, onClick }) => {
       onClick={() => onClick(fileId)}
       className="text-white p-2 border border-neutral-700 flex justify-between items-center rounded cursor-pointer hover:bg-neutral-800"
     >
-      <div className="flex justify-start items-center gap-2">
+      <div className="flex justify-start items-center gap-2 w-full">
         <FaRegFileAlt />
-        <h1>{fileName}</h1>
+        <h1 className="truncate w-full">{fileName}</h1>
       </div>
     </div>
   );
